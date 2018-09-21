@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>test page</title>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <style>
+      * {margin: 0; padding: 0;
+        box-sizing: border-box;
+        font-family: 'Oswald', sans-serif;}
+      body {background: #403F63;}
+      .cubeControl {transform-style: preserve-3d;
+                    width:100px; height:100px;
+                    position: absolute;
+                    transform:translateX(-50%) translateY(-50%);
+                     perspective: 800px;
+                    cursor:pointer;}
+      .cube {width:100px; height:100px;
+            transform-style: preserve-3d;
+            transform:rotateX(0deg) rotateY(0deg);
+            transition: all 1s ease;}
+
+      .cube .solid {width:100px; height: 100px;
+                    border:.5px solid #403F63;
+                    position: absolute;
+                    background:#F384AA;
+                    opacity: .5;}
+      .cube:hover .solid {background:#74B9E8 ;}
+      .front {transform:translateZ(50px);}
+      .back {transform:translateZ(-50px);}
+      .left {transform:rotateY(90deg) translateZ(-50px) ;}
+      .right {transform:rotateY(90deg) translateZ(50px);}
+      .top {transform:rotateX(90deg) translateZ(50px);}
+      .bottom {transform:rotateX(90deg) translateZ(-50px);}
+      video {width:inherit;
+             position:absolute; top:20px;
+            opacity:0;
+            transition: opacity .5s ease;
+            }
+
+      article {position: absolute;
+               left:50%; top:50%;
+               transform:translateX(-50%) translateY(-50%);
+              color:#fcd588; font-size: 1.5em;
+              width:500px; height:350px;}
+      h2 {width:inherit;
+          position: absolute;
+          text-align: center;
+          top:150px;
+          z-index: -1;}
+    </style>
+
+  </head>
+  <script>
+   function Cube(num,xPos,yPos){
+     document.writeln(`
+     <div class="cubeControl cw${num}">
+       <div class="cube">
+
+         <div class="front solid">
+          <video src="media.mp4" loop preload></video>
+         </div>
+         <div class="back solid">
+          <video src="media.mp4" loop preload></video>
+         </div>
+         <div class="left solid">
+          <video src="media.mp4" loop preload></video>
+         </div>
+         <div class="right solid">
+          <video src="media.mp4" loop preload></video>
+         </div>
+         <div class="top solid">
+          <video src="media.mp4" loop preload></video>
+         </div>
+         <div class="bottom solid">
+          <video src="media.mp4" loop preload></video>
+         </div>
+       </div>
+     </div>
+     `);
+
+     var cube = document.querySelectorAll(".cube");
+     var i = 0;
+     rotateCube = setInterval(function() {
+       i++;
+       for(var x = 0; x<cube.length; x++){
+         cube[x].style.transform = "rotateX("+i+"deg) rotateY("+i+"deg)";
+       }
+
+     }, 30);
+
+     var cubeControl = document.querySelector(".cw"+num);
+     cubeControl.style.top = yPos + "%";
+     cubeControl.style.left = xPos + "%";
+   }
+
+  </script>
+  <body>
+    <article>
+      <video class="main" src="media.mp4" preload></video>
+      <h2>Lemon World Video</h2>
+    </article>
+
+      <script>
+        Cube(1,35,50);
+        Cube(2,65,50);
+
+        function b(){
+          player = document.querySelector(".cw1");
+          pauser = document.querySelector(".cw2");
+          player.onclick = function(){
+            var media = document.querySelectorAll("video");
+            for(var m = 0; m< media.length; m++){
+              media[m].play();
+              media[m].style.opacity = 1;
+            };
+          }
+          pauser.onclick = function(){
+            var media = document.querySelectorAll("video");
+            for(var m = 0; m< media.length; m++){
+              media[m].pause();
+              media[m].style.opacity = 0;
+              media[m].currentTime = 0;
+            };
+          }
+        }
+        b();
+      </script>
+  </body>
+</html>
